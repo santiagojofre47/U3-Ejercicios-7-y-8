@@ -6,14 +6,23 @@ from ITesorero import ITesorero
 from IDirector import IDirector
 
 def tesorero(manejador: ITesorero):
-        cuil = input('Ingrese el cuil de un agente: ')
-        manejador.gastosSueldoPorEmpleado(cuil)
+    salir = False
+    while not salir:
+        cuil = input('Ingrese el cuil de un agente (0 para salir): ')
+        if cuil == '0':
+            salir = True
+        else:
+            manejador.gastosSueldoPorEmpleado(cuil)
+     
 
 def director(manejador: IDirector):
+    salir = False
+    while not salir:
         print('1- Modificar el sueldo basico de un empleado')
         print('2- Modificar el importe extra de un Docente Investigador')
         print('3- Modificar el porcentaje por cargo')
         print('4- Modificar el porcentaje por categoria')
+        print('5- Salir')
         opcion = int(input('Ingrese una opcion: '))
         if opcion == 1:
             cuil = input('Ingrese el cuil de un agente: ')
@@ -29,9 +38,12 @@ def director(manejador: IDirector):
         elif opcion == 4:
             nuevo_porcentaje = float(input('Ingrese el nuevo porcentaje: '))
             manejador.modificarPorcentajeporcategoria(nuevo_porcentaje)
-            
+        elif opcion == 5:
+            salir = True
+            print('Cerrando menu de director...')
         else:
-            print('ERROR: Opcion ingresda incorrecta!')    
+            print('ERROR: Opcion ingresda incorrecta!')   
+            input('Presione ENTER para continuar...') 
 
 if __name__ == '__main__':
     objetoEncoder = ObjectEncoder()
@@ -39,25 +51,17 @@ if __name__ == '__main__':
     objetoMenu = Menu()
     d = objetoEncoder.leerJSONArchivo('personal.json')
     unaLista = objetoEncoder.decodificarDiccionario(d)
-    usuario = input('Ingrese el nombre de usuario: ')
-    password = input('Ingrese la contrasenia: ')
-    if usuario == 'uTesorero'.lower() and password == 'ag@74ck':
-        tesorero(ITesorero(unaLista))
-       
-    elif usuario == 'uDirector'.lower() and password == 'ufC77#!1':
-        director(IDirector(unaLista))
-    else:
-        print('ERROR: Usuario y/o contrasenia incorrectos!')    
+    correcto = False
+    while not correcto:
+        usuario = input('Ingrese el nombre de usuario: ')
+        password = input('Ingrese la contrasenia: ')
+        if usuario == 'uTesorero'.lower() and password == 'ag@74ck':
+            tesorero(ITesorero(unaLista))
+            correcto = True
+        elif usuario == 'uDirector'.lower() and password == 'ufC77#!1':
+            director(IDirector(unaLista))
+            correcto = True
+        else:
+            print('ERROR: Usuario y/o contrasenia incorrectos!')   
+            input('Presione ENTER para continuar...') 
     objetoMenu.mostrarMenu(unaLista, objetoEncoder)    
-        
-
-
-
-
-    
-
-
-
-
-   
-  
